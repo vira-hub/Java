@@ -1,0 +1,215 @@
+import java.awt.event.;GamePanel extends ActionListener{static int PLAY = 1;static int STOP = 2;static int PAUSE =3;void startNewGame();void pauseGame();void resumeGame();void stopGame();int getScore();int getState();void figureMoveRight();void figureMoveLeft();void figureMoveDown();void figureRotate();void gamePauseResume();
+}
+Tetris.javaTetr;class Tetris {static void main(String[] args) throws InterruptedException {.setDefaultLookAndFeelDecorated(true);frame = new TetrisFrame();.setVisible(true);s = "D:\\FirstProb2\\src\\Tetr\\tetris.mid";(args.length>0)= args[0];PlaySound(s);
+}
+}
+ButtonPanel.javaTetr;class ButtonPanel extends javax.swing.JPanel {TetrisFrame frame;ButtonPanel(TetrisFrame frame) {.frame = frame;();
+}
+// <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponentsvoid initComponents() {= new javax.swing.JButton();= new javax.swing.JButton();(false);.setText("Resume");.setFocusable(false);.addActionListener(new java.awt.event.ActionListener() {void actionPerformed(java.awt.event.ActionEvent evt) {ActionPerformed(evt);
+}
+});(jButton1);.setText("Pause");.setFocusable(false);.addActionListener(new java.awt.event.ActionListener() {void actionPerformed(java.awt.event.ActionEvent evt) {ActionPerformed(evt);
+}
+});(jButton2);
+}// </editor-fold>//GEN-END:initComponentsvoid jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed.continueButtonPressed(evt);
+}//GEN-LAST:event_jButton1ActionPerformedvoid jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed.pauseButtonPressed(evt);
+}//GEN-LAST:event_jButton2ActionPerformed
+// Variables declaration - do not modify//GEN-BEGIN:variablesjavax.swing.JButton jButton1;javax.swing.JButton jButton2;
+// End of variables declaration//GEN-END:variables
+}
+Figure.javaTetr;java.util.Random;java.awt.;class Figure {static byte[][][] PATTERN = {
+{{0,0,0,0},
+{0,0,0,0},
+{0,0,0,0},
+{0,0,0,0}
+},
+{
+{1}, //
+{1},
+{1},
+{1}
+},
+{{2,0},
+{2,0},
+{2,2}
+},
+{{0,3},
+{0,3},
+{3,3}
+},
+{{4,0},
+{4,4},
+{4,0}
+},
+{{5,0},
+{5,5},
+{0,5}
+},
+{{0,6},
+{6,6},
+{6,0}
+},
+{{7,7},
+{7,7}
+}
+};
+final static Color[] COLORS = {
+Color.GRAY,
+Color.BLUE,.CYAN,.GREEN,.MAGENTA,.RED,.PINK,.YELLOW
+};int type;int[][] pat;int x,y,rotation;static Random r = new Random();static int nextType = 0;static int nextRot = -1;Figure() {(nextType==0) {= r.nextInt(PATTERN.length-1)+1;= r.nextInt(4);
+} else {= nextType;= nextRot;
+}= r.nextInt(PATTERN.length-1)+1;= 0; x = 4;= r.nextInt(4);= new int[PATTERN[type].length]
+[PATTERN[type][0].length];(int i=0; i<pat.length; i++)(int j=0; j<pat[i].length; j++) {[i][j] = PATTERN[type][i][j];
+}(int i=0; i<rotation; i++) rotate();
+}int getX() {x;
+}int getY() {y;
+}int getHeight() {pat.length;
+}int getWidth() {pat[0].length;
+}int getCell(int i, int j) {(i<0 || i>=pat.length || j<0 || j>=pat[0].length) return 0;pat[i][j];
+}void draw(Graphics g) {(int i=0; i<pat.length; i++) {(int j=0; j<pat[i].length; j++)(pat[i][j]!=0){.setColor(COLORS[pat[i][j]]);.fillRect((x+j)*30+11,(i+y)*30+1,28,28);
+}
+}(g,350,50);
+}void drawNext(Graphics g, int px, int py) {[][] p = new int[PATTERN[nextType].length][PATTERN[nextType][0].length];(int i=0; i<p.length; i++) {(int j=0; j<p[0].length; j++) {[i][j] = PATTERN[nextType][i][j];
+}
+}(int kr=0; kr<nextRot; kr++){[][] p2 = new int[p[0].length][p.length];(int i=0; i<p.length; i++) {(int j=0; j<p[0].length; j++) {[j][i] = p[i][j];
+}
+}= new int[p2.length][p2[0].length];(int i=0; i<p.length; i++) for (int j=0; j<p[0].length; j++) {[i][j] = p2[p.length-i-1][j];
+}
+}(int i=0; i<4; i++) for (int j=0; j<4; j++) {.setColor(COLORS[0]);.fillRect(j*30+px, i*30+py, 28,28);
+}(int i=0; i<p.length; i++) for(int j=0; j<p[0].length; j++) {.setColor(COLORS[p[i][j]]);.fillRect(j*30+px, i*30+py, 28,28);
+}
+}void rotate() {[][] newPat = new int[pat[0].length][pat.length];(int i=0; i<pat.length; i++) for (int j=0; j<pat[0].length; j++) {[j][i] = pat[i][j];
+}= new int[newPat.length][newPat[0].length];(int i=0; i<pat.length; i++) for (int j=0; j<pat[0].length; j++) {[i][j] = newPat[pat.length-i-1][j];
+}
+}boolean canDown(Glass stakan) {[][] a = new int[21][10];(int i = 0; i<stakan.getHeight(); i++) {(int j = 0; j<stakan.getWidth(); j++) {[i][j] = stakan.getCell(i,j);
+}
+}(int i=0; i<pat.length; i++) {(int j=0; j<pat[i].length; j++) {xx = x+j, yy = y+i+1;(pat[i][j]>0 && a[yy][xx]>0) {false;
+}
+}
+}true;
+}void moveDown() {++;
+}boolean canLeft(Glass stakan) {(x==0) return false;[][] s = new int[pat.length][pat[0].length];(int i=0; i<s.length; i++) for (int j=0; j<s[0].length; j++) {[i][j] = stakan.getCell(y+i,j+x-1);
+}(int i=0; i<s.length; i++) for (int j=0; j<s[0].length; j++) {(s[i][j]*pat[i][j]>0) {false;
+}
+}true;
+}boolean canRight(Glass stakan) {(x==stakan.getWidth()-pat[0].length) return false;[][] s = new int[pat.length][pat[0].length];(int i=0; i<s.length; i++) for (int j=0; j<s[0].length; j++) {[i][j] = stakan.getCell(y+i,j+x+1);
+}(int i=0; i<s.length; i++) for (int j=0; j<s[0].length; j++) {(s[i][j]*pat[i][j]>0) {false;
+}
+}true;
+}boolean canRotate(Glass stakan) {(x+pat.length>stakan.getWidth()) return false;[][] tmpPat = new int[pat[0].length][pat.length];(int i=0; i<pat.length; i++) for (int j=0; j<pat[0].length; j++) {[j][i] = pat[i][j];
+}[][] tPat = new int[tmpPat.length][tmpPat[0].length];(int i=0; i<tPat.length; i++) for (int j=0; j<tPat[0].length; j++) {[i][j] = tmpPat[tPat.length-i-1][j];
+}[][] s = new int[tPat.length][tPat[0].length];(int i=0; i<s.length; i++) for (int j=0; j<s[0].length; j++) {[i][j] = stakan.getCell(y+i,j+x);
+}(int i=0; i<s.length; i++) for (int j=0; j<s[0].length; j++) {(s[i][j]*tPat[i][j]>0) {false;
+}
+}true;
+}void moveLeft() {(x>0) {-;
+}
+}void moveRight() {(x<10-pat[0].length) {++;
+}
+}
+}
+Glass.javaTetr;java.awt.;class Glass {int[] x = {0, 10, 10, 310, 310, 320, 320, 0};int[] y = {0, 0, 600, 600, 0, 0, 610, 610};int[][] cells = new int[21][10];Glass() {();
+}void clearGlass() {(int i = 0; i<cells.length; i++) {(int j = 0; j<cells[i].length; j++) {[i][j] = (i==cells.length-1) ? 10 : 0;
+}
+}
+}int getHeight() {cells.length;
+}int getWidth() {cells[0].length;
+}int getCell(int i, int j) {cells[i][j];
+}void draw(Graphics g) {.setColor(Color.GRAY);.fillRect(10,0,300,600);.setColor(Color.BLUE);.fillPolygon(x,y,x.length);(int i = 0; i<cells.length-1; i++) {(int j = 0; j<cells[i].length; j++) {(g,i,j);
+}
+}
+}void drawCell(Graphics g, int i, int j) {.setColor(Figure.COLORS[cells[i][j]]);.fillRect(j*30+11,i*30+1,28,28);
+}int acceptFigure(Figure f){(int i=0; i<f.getHeight(); i++) {(int j=0; j<f.getWidth(); j++) {xx = f.getX()+j, yy = f.getY()+i;
+if (f.getCell(i,j)!=0) { // клітинка не порожня
+cells[yy][xx] = f.getCell(i,j);
+} }
+}lines = clearFullLines();(lines>0) return lines;(f.getY()==0) return -1;0;
+}int clearFullLines() {linesCount = 0;: for (int i=1; i<20; i++){(int j=0; j<10; j++) {(cells[i][j]==0) {lineLoop;
+}
+}++;(int j=i; j>=1; j--) {[j]=cells[j-1];
+}[0] = new int[10];(int j=0; j<10; j++) {[0][j]=0;
+}
+}linesCount;
+}
+}
+PlaySound.javaTetr;java.awt.event.ActionEvent;java.awt.event.ActionListener;javax.sound.midi.;java.io.;class PlaySound implements ActionListener{PlaySound(String s){(s);
+}void play(String file) {{f = new File(file);sequencer = MidiSystem.getSequencer();(sequencer == null) {.err.println("Sequenser not supported");
+}.open();seq = MidiSystem.getSequence(f);.setSequence(seq);.start();.setLoopCount(1000);
+}catch(Exception e){.err.println(e);
+}
+}void actionPerformed(ActionEvent e) {new UnsupportedOperationException("Not supported yet.");
+}
+}
+TetrisFrame.javaTetr;Tetr.TetrisGamePanel;java.awt.event.ActionEvent;java.awt.event.KeyEvent;class TetrisFrame extends javax.swing.JFrame {
+/ Creates new form TetrisFrame /TetrisFrame() {();.grabFocus();
+}
+// <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponentsvoid initComponents() {= buttonPanel1 = new ButtonPanel(this);= new javax.swing.JMenuBar();= new javax.swing.JMenu();= new javax.swing.JMenuItem();= new javax.swing.JMenuItem();= new javax.swing.JSeparator();= new javax.swing.JMenuItem();= new Tetr.TetrisGamePanel();= new javax.swing.JMenuBar();= new javax.swing.JMenu();= new javax.swing.JMenuItem();= new javax.swing.JMenuItem();= new javax.swing.JSeparator();= new javax.swing.JMenuItem();(javax.swing.WindowConstants.EXIT_ON_CLOSE);(false);.setText("File");.setText("Item");.add(menuNewGame);.setText("Item");.add(menuPauseGame);.add(jSeparator1);.setText("Item");.add(menuFileExit);.add(jMenu1);.addKeyListener(new java.awt.event.KeyAdapter() {void keyPressed(java.awt.event.KeyEvent evt) {KeyPressed(evt);
+}
+});.setFocusable(false);.setText("File");.setFocusable(false);.setText("Start New Game");.addActionListener(new java.awt.event.ActionListener() {void actionPerformed(java.awt.event.ActionEvent evt) {ActionPerformed(evt);
+}
+});.add(menuNewGame1);.setText("Stop Game");.addActionListener(new java.awt.event.ActionListener() {void actionPerformed(java.awt.event.ActionEvent evt) {ActionPerformed(evt);
+}
+});.add(menuPauseGame1);.add(jSeparator2);.setText("Exit");.addActionListener(new java.awt.event.ActionListener() {void actionPerformed(java.awt.event.ActionEvent evt) {ActionPerformed(evt);
+}
+});.add(menuFileExit1);.add(jMenu2);(menuBar1);.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());().setLayout(layout);.setHorizontalGroup(.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+.addGroup(layout.createSequentialGroup()
+.addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+.addGroup(layout.createSequentialGroup()
+.addGap(153, 153, 153)
+.addComponent(buttonPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+.addGroup(layout.createSequentialGroup()
+.addContainerGap()
+.addComponent(tetrisGamePanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 485, javax.swing.GroupLayout.PREFERRED_SIZE)))
+.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+);.setVerticalGroup(.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+.addGroup(layout.createSequentialGroup()
+.addContainerGap()
+.addComponent(buttonPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+.addGap(18, 18, 18)
+.addComponent(tetrisGamePanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 612, javax.swing.GroupLayout.PREFERRED_SIZE)
+.addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+);();
+}// </editor-fold>//GEN-END:initComponentsvoid tetrisGamePanel1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_tetrisGamePanel1KeyPressedp = (TetrisGamePanel)tetrisGamePanel1;(evt.getKeyCode()) {KeyEvent.VK_LEFT:.figureMoveLeft();;KeyEvent.VK_RIGHT:.figureMoveRight();;KeyEvent.VK_UP:.figureRotate();;KeyEvent.VK_DOWN:.figureMoveDown();;KeyEvent.VK_F2:.startNewGame();;KeyEvent.VK_F3:.gamePauseResume();;: return;
+}();
+}//GEN-LAST:event_tetrisGamePanel1KeyPressedvoid menuNewGame1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuNewGame1ActionPerformedp = (TetrisGamePanel)tetrisGamePanel1;.startNewGame();
+}//GEN-LAST:event_menuNewGame1ActionPerformedvoid menuPauseGame1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuPauseGame1ActionPerformedp = (TetrisGamePanel)tetrisGamePanel1;.stopGame();
+}//GEN-LAST:event_menuPauseGame1ActionPerformedvoid menuFileExit1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuFileExit1ActionPerformed.exit(0);
+}//GEN-LAST:event_menuFileExit1ActionPerformedvoid continueButtonPressed(ActionEvent evt) {p = (TetrisGamePanel)tetrisGamePanel1;.resumeGame();
+}void pauseButtonPressed(ActionEvent evt) {p = (TetrisGamePanel)tetrisGamePanel1;.pauseGame();
+}
+// Variables declaration - do not modify//GEN-BEGIN:variablesTetr.ButtonPanel buttonPanel1;javax.swing.JMenu jMenu1;javax.swing.JMenu jMenu2;javax.swing.JSeparator jSeparator1;javax.swing.JSeparator jSeparator2;javax.swing.JMenuBar menuBar;javax.swing.JMenuBar menuBar1;javax.swing.JMenuItem menuFileExit;javax.swing.JMenuItem menuFileExit1;javax.swing.JMenuItem menuNewGame;javax.swing.JMenuItem menuNewGame1;javax.swing.JMenuItem menuPauseGame;javax.swing.JMenuItem menuPauseGame1;Tetr.TetrisGamePanel tetrisGamePanel1;
+}
+TetrisGamePanel.javaTetr;java.awt.*;java.awt.event.*;javax.swing.*;class TetrisGamePanel extends javax.swing.JPanel implements GamePanel,ActionListener {Glass stakan;Figure fig = null;int score = 0;int gameState;int[] DELAY = {500, 450, 400, 350, 300, 250, 200, 150, 100, 50};int level = 1;t = new javax.swing.Timer(DELAY[level], this);TetrisGamePanel() {= new Glass();();.start();
+}
+@Overridevoid paintComponent(Graphics g) {.paintComponent(g);.draw(g);.draw(g);.setFont(new Font("Times New Roman", Font.BOLD, 24));.setColor(Color.BLACK);.drawString("Счет: " + score, 350, 250);.drawString("Уровень: " + level, 350, 300);
+}int getScore() {score;
+}void startNewGame() {= 0;= 1;= new Figure();= new Glass();= PLAY;
+}void pauseGame() {(gameState == PLAY) {= PAUSE;
+}
+}void resumeGame() {(gameState == PAUSE) {= PLAY;
+}
+}void stopGame() {= STOP;
+}int getState() {gameState;
+}void figureMoveRight(){(fig.canRight(stakan)& gameState==PLAY).moveRight();
+}void figureMoveLeft(){(fig.canLeft(stakan)& gameState==PLAY).moveLeft();
+}void figureMoveDown(){.setDelay(DELAY[level]/20);
+}void figureRotate(){(fig.canRotate(stakan)& gameState==PLAY).rotate();
+}void gamePauseResume(){(gameState==PLAY) {= PAUSE;
+}(gameState==PAUSE) {= PLAY;
+}
+}void actionPerformed(ActionEvent e) {(gameState != PLAY) {;
+}bonus;(fig.canDown(stakan)) {.moveDown();
+} else {((bonus = stakan.acceptFigure(fig)) < 0) {();
+}(bonus > 0) {(bonus) {4:+= 20;3:+= 15;2:+= 10;1:+= 5;
+}newLevel = score / 100 + 1;(newLevel > level && level < 9) {++;
+}
+}(gameState == PLAY) {= new Figure();.setDelay(DELAY[level]);
+}
+}();
+}
+// <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponentsvoid initComponents() {.swing.GroupLayout layout = new javax.swing.GroupLayout(this);.setLayout(layout);.setHorizontalGroup(.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+.addGap(0, 400, Short.MAX_VALUE)
+);.setVerticalGroup(.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+.addGap(0, 300, Short.MAX_VALUE)
+);
+}// </editor-fold>//GEN-END:initComponents
+}
